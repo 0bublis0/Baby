@@ -8,12 +8,39 @@ import MedievalButton from '../components/MedievalButton';
 import { colors } from '../theme';
 
 const STYLE_PRESETS = [
-  'Medieval ballad with lute and flute, slow waltz in 3/4',
-  'Epic fantasy battle march with horns and drums',
-  'Celtic tavern jig, fast and lively',
-  'Dark dungeon ambience with organ and strings',
-  'Royal fanfare with brass and percussion',
-  'Peaceful elven forest with harp and flute',
+  { era: 'Ancient & Medieval', presets: [
+    'Gregorian chant with choir, slow and ethereal, 4/4',
+    'Medieval ballad with lute and flute, slow waltz in 3/4',
+    'Celtic jig with harp and flute, fast and lively',
+  ]},
+  { era: 'Renaissance (1400–1600)', presets: [
+    'Renaissance dance with lute, recorder and viol, bright and lively',
+    'Madrigal with choir and strings, gentle four-part harmony',
+  ]},
+  { era: 'Baroque (1600–1750)', presets: [
+    'Bach-style fugue with harpsichord and organ, complex counterpoint',
+    'Baroque concerto with violin, strings and harpsichord, fast and ornate',
+  ]},
+  { era: 'Classical (1750–1820)', presets: [
+    'Mozart-style piano sonata, elegant and bright, 4/4',
+    'Classical string quartet, Haydn style, playful and structured',
+  ]},
+  { era: 'Romantic (1820–1900)', presets: [
+    'Chopin nocturne for solo piano, slow and deeply emotional',
+    'Romantic orchestral piece with strings, brass and choir, epic and sweeping',
+  ]},
+  { era: 'Jazz & Blues (1900–1960)', presets: [
+    '1920s jazz with piano, trumpet and upright bass, swing rhythm',
+    '12-bar blues with guitar, harmonica and drums, slow and soulful',
+  ]},
+  { era: 'Rock & Pop (1950s–1990s)', presets: [
+    'Classic rock with electric guitar, bass and drums, driving 4/4',
+    '80s synth-pop with synthesizers, drum machine and bass',
+  ]},
+  { era: 'Electronic & Modern', presets: [
+    'Electronic dance music with synth leads, bass and kick drum, 128 BPM',
+    'Lo-fi hip hop with piano, bass and soft brushed drums, slow and chill',
+  ]},
 ];
 
 export default function DescribeScreen({ navigation, route }) {
@@ -62,7 +89,7 @@ export default function DescribeScreen({ navigation, route }) {
     } catch (err) {
       stopSpin();
       setLoading(false);
-      Alert.alert('The Bard Stumbled', err.message || 'Something went wrong. Try again.');
+      Alert.alert('Composition Failed', err.message || 'Something went wrong. Try again.');
     }
   };
 
@@ -105,7 +132,7 @@ export default function DescribeScreen({ navigation, route }) {
               style={styles.textInput}
               value={styleText}
               onChangeText={setStyleText}
-              placeholder="e.g. Medieval ballad with lute and flute, slow and melancholic, in 3/4 waltz time..."
+              placeholder="e.g. Chopin nocturne for solo piano, slow and emotional... or 80s synth-pop, driving beat..."
               placeholderTextColor={colors.textDim}
               multiline
               numberOfLines={4}
@@ -117,18 +144,23 @@ export default function DescribeScreen({ navigation, route }) {
 
           {/* Preset styles */}
           <View style={styles.presetsPanel}>
-            <Text style={styles.presetsTitle}>QUICK STYLES</Text>
-            {STYLE_PRESETS.map((preset, i) => (
-              <TouchableOpacity
-                key={i}
-                style={[styles.preset, styleText === preset && styles.presetActive]}
-                onPress={() => setStyleText(preset)}
-                activeOpacity={0.7}
-              >
-                <Text style={[styles.presetText, styleText === preset && styles.presetTextActive]}>
-                  {preset}
-                </Text>
-              </TouchableOpacity>
+            <Text style={styles.presetsTitle}>STYLES ACROSS MUSIC HISTORY</Text>
+            {STYLE_PRESETS.map((group, gi) => (
+              <View key={gi} style={styles.eraGroup}>
+                <Text style={styles.eraLabel}>{group.era}</Text>
+                {group.presets.map((preset, pi) => (
+                  <TouchableOpacity
+                    key={pi}
+                    style={[styles.preset, styleText === preset && styles.presetActive]}
+                    onPress={() => setStyleText(preset)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={[styles.presetText, styleText === preset && styles.presetTextActive]}>
+                      {preset}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             ))}
           </View>
 
@@ -163,7 +195,9 @@ const styles = StyleSheet.create({
 
   presetsPanel: { backgroundColor: colors.panel, borderWidth: 2, borderColor: colors.goldDim, borderRadius: 4, padding: 16, marginBottom: 20 },
   presetsTitle: { color: colors.gold, fontSize: 12, letterSpacing: 2, fontWeight: 'bold', marginBottom: 12 },
-  preset: { padding: 10, borderWidth: 1, borderColor: '#2a1a00', borderRadius: 3, marginBottom: 8 },
+  eraGroup: { marginBottom: 14 },
+  eraLabel: { color: colors.gold, fontSize: 11, letterSpacing: 1.5, fontWeight: 'bold', marginBottom: 6, textTransform: 'uppercase' },
+  preset: { padding: 10, borderWidth: 1, borderColor: '#2a1a00', borderRadius: 3, marginBottom: 6 },
   presetActive: { borderColor: colors.gold, backgroundColor: '#2a1a00' },
   presetText: { color: colors.textDim, fontSize: 13, lineHeight: 18 },
   presetTextActive: { color: colors.gold },

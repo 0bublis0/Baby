@@ -187,16 +187,85 @@ function loadTone() {
 // ═══════════════════════════════
 function makeInstrument(name) {
   var n = (name || '').toLowerCase();
-  if (n.includes('lute') || n.includes('pluck')) {
-    return new Tone.PluckSynth({ attackNoise: 1.5, dampening: 3500, resonance: 0.97 }).toDestination();
+
+  // ── Plucked / keyboard ──
+  if (n.includes('piano') || n.includes('grand')) {
+    return new Tone.PluckSynth({ attackNoise: 0.8, dampening: 5000, resonance: 0.99 }).toDestination();
+  }
+  if (n.includes('harpsichord') || n.includes('clavier')) {
+    return new Tone.PluckSynth({ attackNoise: 2.5, dampening: 2000, resonance: 0.88 }).toDestination();
   }
   if (n.includes('harp')) {
     return new Tone.PluckSynth({ attackNoise: 0.4, dampening: 6000, resonance: 0.98 }).toDestination();
   }
-  if (n.includes('flute') || n.includes('pipe') || n.includes('wind')) {
+  if (n.includes('lute') || n.includes('pluck') || n.includes('banjo') || n.includes('mandolin')) {
+    return new Tone.PluckSynth({ attackNoise: 1.5, dampening: 3500, resonance: 0.97 }).toDestination();
+  }
+
+  // ── Guitar ──
+  if (n.includes('guitar') && (n.includes('electric') || n.includes('elec'))) {
+    return new Tone.FMSynth({
+      harmonicity: 2, modulationIndex: 8,
+      envelope: { attack: 0.01, decay: 0.3, sustain: 0.4, release: 0.8 }
+    }).toDestination();
+  }
+  if (n.includes('guitar')) {
+    return new Tone.PluckSynth({ attackNoise: 2, dampening: 4000, resonance: 0.95 }).toDestination();
+  }
+
+  // ── Wind / Woodwind ──
+  if (n.includes('flute') || n.includes('recorder') || n.includes('piccolo')) {
     return new Tone.Synth({
       oscillator: { type: 'triangle8' },
       envelope: { attack: 0.12, decay: 0.1, sustain: 0.6, release: 0.6 }
+    }).toDestination();
+  }
+  if (n.includes('oboe') || n.includes('bassoon') || n.includes('clarinet')) {
+    return new Tone.Synth({
+      oscillator: { type: 'square4' },
+      envelope: { attack: 0.08, decay: 0.1, sustain: 0.65, release: 0.4 }
+    }).toDestination();
+  }
+  if (n.includes('saxophone') || n.includes('sax')) {
+    return new Tone.FMSynth({
+      harmonicity: 3, modulationIndex: 5,
+      envelope: { attack: 0.06, decay: 0.1, sustain: 0.6, release: 0.5 }
+    }).toDestination();
+  }
+
+  // ── Brass ──
+  if (n.includes('trumpet') || n.includes('horn') || n.includes('brass') || n.includes('trombone') || n.includes('bugle')) {
+    return new Tone.Synth({
+      oscillator: { type: 'sawtooth8' },
+      envelope: { attack: 0.09, decay: 0.1, sustain: 0.7, release: 0.5 }
+    }).toDestination();
+  }
+
+  // ── Strings ──
+  if (n.includes('violin') || n.includes('viola') || n.includes('cello') || n.includes('strings')) {
+    return new Tone.Synth({
+      oscillator: { type: 'sawtooth' },
+      envelope: { attack: 0.2, decay: 0.1, sustain: 0.7, release: 0.8 }
+    }).toDestination();
+  }
+
+  // ── Drums / Percussion ──
+  if (n.includes('snare')) {
+    return new Tone.NoiseSynth({
+      noise: { type: 'white' },
+      envelope: { attack: 0.001, decay: 0.15, sustain: 0, release: 0.05 }
+    }).toDestination();
+  }
+  if (n.includes('hihat') || n.includes('hi-hat') || n.includes('cymbal')) {
+    return new Tone.MetalSynth({
+      frequency: 400, envelope: { attack: 0.001, decay: 0.1, release: 0.05 },
+      harmonicity: 5.1, modulationIndex: 32, resonance: 4000, octaves: 1.5
+    }).toDestination();
+  }
+  if (n.includes('timpani')) {
+    return new Tone.MembraneSynth({
+      pitchDecay: 0.08, octaves: 3,
+      envelope: { attack: 0.001, decay: 0.5, sustain: 0, release: 0.2 }
     }).toDestination();
   }
   if (n.includes('drum') || n.includes('percussion') || n.includes('beat') || n.includes('kick')) {
@@ -205,30 +274,50 @@ function makeInstrument(name) {
       envelope: { attack: 0.001, decay: 0.25, sustain: 0, release: 0.1 }
     }).toDestination();
   }
-  if (n.includes('horn') || n.includes('brass') || n.includes('trumpet') || n.includes('bugle')) {
-    return new Tone.Synth({
-      oscillator: { type: 'sawtooth8' },
-      envelope: { attack: 0.09, decay: 0.1, sustain: 0.7, release: 0.5 }
-    }).toDestination();
-  }
+
+  // ── Bass ──
   if (n.includes('bass')) {
     return new Tone.FMSynth({
       harmonicity: 1.5, modulationIndex: 3,
       envelope: { attack: 0.05, decay: 0.1, sustain: 0.5, release: 0.4 }
     }).toDestination();
   }
-  if (n.includes('organ') || n.includes('choir') || n.includes('pad') || n.includes('harmony')) {
+
+  // ── Keyboard / Pads ──
+  if (n.includes('organ')) {
     return new Tone.AMSynth({
       harmonicity: 2,
-      envelope: { attack: 0.1, decay: 0.1, sustain: 0.8, release: 0.6 }
+      envelope: { attack: 0.01, decay: 0.0, sustain: 1.0, release: 0.3 }
     }).toDestination();
   }
-  if (n.includes('string') || n.includes('violin') || n.includes('cello') || n.includes('viola')) {
+  if (n.includes('choir') || n.includes('vocal') || n.includes('voice')) {
+    return new Tone.AMSynth({
+      harmonicity: 1.5,
+      envelope: { attack: 0.3, decay: 0.1, sustain: 0.9, release: 0.8 }
+    }).toDestination();
+  }
+  if (n.includes('pad') || n.includes('atmosphere') || n.includes('ambient')) {
+    return new Tone.AMSynth({
+      harmonicity: 2.5,
+      envelope: { attack: 0.4, decay: 0.2, sustain: 0.8, release: 1.2 }
+    }).toDestination();
+  }
+
+  // ── Electronic / Synth ──
+  if (n.includes('lead') || n.includes('arp')) {
     return new Tone.Synth({
       oscillator: { type: 'sawtooth' },
-      envelope: { attack: 0.2, decay: 0.1, sustain: 0.7, release: 0.8 }
+      envelope: { attack: 0.02, decay: 0.1, sustain: 0.6, release: 0.3 }
     }).toDestination();
   }
+  if (n.includes('synth') || n.includes('electronic') || n.includes('digital')) {
+    return new Tone.FMSynth({
+      harmonicity: 3, modulationIndex: 10,
+      envelope: { attack: 0.02, decay: 0.15, sustain: 0.5, release: 0.5 }
+    }).toDestination();
+  }
+
+  // ── Default ──
   return new Tone.Synth({
     oscillator: { type: 'triangle' },
     envelope: { attack: 0.05, decay: 0.1, sustain: 0.5, release: 0.4 }

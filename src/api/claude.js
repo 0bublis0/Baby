@@ -6,7 +6,7 @@ function buildPrompt(melody, styleDescription) {
     .map(n => `  {pitch:${n.pitch}, start:${n.start.toFixed(2)}, duration:${n.duration.toFixed(2)}}`)
     .join(',\n');
 
-  return `You are a medieval MIDI music composer AI.
+  return `You are an expert MIDI music composer AI spanning all of music history.
 
 The user has hummed a melody. These are the detected notes (MIDI pitch numbers, timings in seconds):
 [
@@ -15,15 +15,21 @@ ${melodyStr}
 
 Style request: "${styleDescription}"
 
-Create a complete MIDI song arrangement. Rules:
-1. Convert the melody times from seconds to beats using the tempo you choose (e.g. 90 BPM).
-2. Include the melody in one track, possibly transposed to fit the key.
-3. Add 2-4 accompaniment tracks: harmony, bass, and optionally rhythm/percussion.
-4. Extend/repeat for 8-16 bars total, making it feel complete.
-5. Honor the style description for instruments, tempo, and mood.
+Create a complete MIDI song arrangement faithful to the requested style and era. Rules:
+1. Convert the melody times from seconds to beats using a tempo appropriate for the style.
+2. Include the melody in one track, transposed to a fitting key if needed.
+3. Add 2-4 accompaniment tracks appropriate to the era and style (harmony, bass, rhythm/percussion).
+4. Extend/repeat for 8-16 bars total so the piece feels complete.
+5. Choose instruments, tempo, time signature, and harmonic language that authentically match the requested era.
 6. All note times are in quarter-note beats. Tempo is BPM.
 
-Available instruments: lute, harp, flute, horn, drum, bass, organ, strings, choir
+Available instruments (choose the most authentic ones for the style):
+  Ancient/Medieval: lute, harp, flute, horn, drum, organ, strings, choir
+  Baroque/Classical: harpsichord, piano, oboe, violin, cello, bassoon, trumpet, timpani
+  Romantic/Orchestral: piano, violin, cello, strings, brass, clarinet, oboe, harp, choir
+  Jazz/Blues: piano, bass, drums, trumpet, saxophone, guitar
+  Rock/Pop: guitar, bass, drums, piano, synth
+  Electronic/Modern: synth, bass, drums, pad, lead, arp
 
 Respond with ONLY a valid JSON object, no explanation:
 {
@@ -34,8 +40,8 @@ Respond with ONLY a valid JSON object, no explanation:
   "totalBeats": 24,
   "tracks": [
     {
-      "name": "Melody Lute",
-      "instrument": "lute",
+      "name": "Melody — Piano",
+      "instrument": "piano",
       "volume": 100,
       "notes": [
         {"pitch": 62, "start": 0.0, "duration": 1.0, "velocity": 85}

@@ -74,11 +74,11 @@ export default function HomeScreen({ navigation }) {
           </View>
           <View style={styles.step}>
             <Text style={styles.stepNum}>II</Text>
-            <Text style={styles.stepText}>Describe the style you want</Text>
+            <Text style={styles.stepText}>Choose a style — any era, any genre</Text>
           </View>
           <View style={styles.step}>
             <Text style={styles.stepNum}>III</Text>
-            <Text style={styles.stepText}>The AI Bard composes your song</Text>
+            <Text style={styles.stepText}>AI composes a full arrangement in your chosen style</Text>
           </View>
           <View style={styles.step}>
             <Text style={styles.stepNum}>IV</Text>
