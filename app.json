@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "BardAI",
+    "slug": "BardAI",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0500"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bardai.app",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "BardAI needs your microphone to hear your melody.",
+        "NSCameraUsageDescription": "BardAI uses the camera for capturing musical ideas."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0a0500"
+      },
+      "permissions": ["RECORD_AUDIO"],
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      ["expo-av", {"microphonePermission": "BardAI needs your microphone to hear your melody."}]
+    ],
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
