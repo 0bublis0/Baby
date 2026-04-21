@@ -5,121 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0a0905">
+  <meta name="theme-color" content="#080806">
   <title>BardAI</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ══════════════ HOME ══════════════ -->
+<!-- ══════════ HOME ══════════ -->
 <div id="screen-home" class="screen active">
-  <div class="screen-body" style="align-items:center;display:flex;flex-direction:column;">
-
-    <button class="icon-btn" id="btn-settings" style="align-self:flex-end;margin-bottom:8px;" title="Settings">&#9881;</button>
+  <div class="screen-body" style="display:flex;flex-direction:column;align-items:center;">
 
     <div class="app-title-block">
       <div class="ornament">&#9670; &#9670; &#9670;</div>
       <div class="app-title">BARD AI</div>
-      <div class="app-tagline">Sing Your Melody &mdash; Any Era</div>
+      <div class="app-tagline">Music from Any Era &mdash; No Account Needed</div>
       <div class="ornament">&#9670; &#9670; &#9670;</div>
     </div>
 
-    <div class="panel how-it-works" style="width:100%">
-      <div class="panel-title">How It Works</div>
-      <div class="step"><span class="step-num">I</span><span class="step-text">Hum or sing your melody</span></div>
-      <div class="step"><span class="step-num">II</span><span class="step-text">Choose a style &mdash; any era, any genre</span></div>
-      <div class="step"><span class="step-num">III</span><span class="step-text">AI composes a full arrangement in your chosen style</span></div>
-      <div class="step"><span class="step-num">IV</span><span class="step-text">Watch the sequencer and listen</span></div>
+    <div class="how-it-works">
+      <div class="how-title">How It Works</div>
+      <div class="step"><span class="step-num">I</span><span class="step-text">Choose a style from any era in music history</span></div>
+      <div class="step"><span class="step-num">II</span><span class="step-text">Pick a mood, speed, and length</span></div>
+      <div class="step"><span class="step-num">III</span><span class="step-text">The app composes a unique MIDI song just for you</span></div>
+      <div class="step"><span class="step-num">IV</span><span class="step-text">Watch the sequencer and listen &mdash; regenerate anytime</span></div>
     </div>
 
-    <div class="key-status">
-      <div id="key-dot" class="dot dot-off"></div>
-      <span id="key-txt">No API key &mdash; tap gear to add</span>
-    </div>
-
-    <button class="btn" id="btn-begin" style="max-width:280px;font-size:16px;padding:18px 32px;">
-      Begin
-    </button>
+    <button class="btn btn-begin" id="btn-begin">Let&rsquo;s Make Music</button>
 
   </div>
 </div>
 
-<!-- ══════════════ RECORD ══════════════ -->
-<div id="screen-record" class="screen">
+<!-- ══════════ CREATE ══════════ -->
+<div id="screen-create" class="screen">
   <div class="screen-header">
     <button class="icon-btn" id="btn-back-home">&#8592;</button>
-    <h2>Record Melody</h2>
+    <h2>Choose Your Style</h2>
     <div style="width:34px"></div>
   </div>
   <div class="screen-body">
-    <div class="record-center">
 
-      <p class="subtitle">Hum or sing your melody as clearly as you can</p>
+    <div style="padding-top:20px">
+      <div class="section-label">Era &amp; Style</div>
+      <div id="style-grid"></div><!-- filled by JS -->
 
-      <div class="mic-area">
-        <div id="pulse-ring" class="pulse-ring"></div>
-        <button class="btn-mic" id="btn-record">
-          <span class="mic-icon">&#9834;</span>
-          <span class="mic-label">TAP TO SING</span>
-        </button>
+      <div class="section-label">Mood</div>
+      <div class="opt-group" id="mood-group">
+        <button class="opt-btn" data-value="bright">Bright</button>
+        <button class="opt-btn" data-value="dark">Dark</button>
+        <button class="opt-btn" data-value="epic">Epic</button>
+        <button class="opt-btn" data-value="peaceful">Peaceful</button>
       </div>
 
-      <div class="live-note-area">
-        <div class="live-note-label">Hearing</div>
-        <div id="live-note" class="live-note">&mdash;</div>
+      <div class="section-label">Speed</div>
+      <div class="opt-group" id="speed-group">
+        <button class="opt-btn" data-value="slow">Slow</button>
+        <button class="opt-btn" data-value="medium">Medium</button>
+        <button class="opt-btn" data-value="fast">Fast</button>
       </div>
 
-      <div id="detected-notes"></div>
-
-      <div class="record-actions">
-        <button class="btn" id="btn-to-describe" disabled>Continue &rarr;</button>
+      <div class="section-label">Length</div>
+      <div class="opt-group" id="length-group">
+        <button class="opt-btn" data-value="short">Short</button>
+        <button class="opt-btn" data-value="medium">Medium</button>
+        <button class="opt-btn" data-value="long">Long</button>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════ DESCRIBE ══════════════ -->
-<div id="screen-describe" class="screen">
-  <div class="screen-header">
-    <button class="icon-btn" id="btn-back-record">&#8592;</button>
-    <h2>Describe Style</h2>
-    <div style="width:34px"></div>
-  </div>
-  <div class="screen-body describe-body">
-
-    <div id="melody-badge" class="melody-badge">&#9834; <span id="note-count">0</span> notes recorded</div>
-
-    <div class="field-label">Style Description</div>
-    <textarea
-      id="style-input"
-      maxlength="300"
-      placeholder="e.g. Chopin nocturne for solo piano, slow and emotional… or 80s synth-pop, driving beat…"
-      oninput="document.getElementById('char-count').textContent=this.value.length+'/300'"
-    ></textarea>
-    <div id="char-count" class="char-count">0/300</div>
-
-    <div class="panel">
-      <div class="panel-title">Styles Across Music History</div>
-      <div id="presets-list"></div>
-    </div>
-
-    <div class="compose-actions">
-      <button class="btn" id="btn-compose" style="font-size:15px;padding:16px;">Compose &rarr;</button>
-      <button class="btn ghost" id="btn-back-record2" onclick="document.getElementById('btn-back-record').click()">Back</button>
+      <div class="create-actions">
+        <button class="btn" id="btn-generate" style="font-size:16px;padding:18px;">Compose &rarr;</button>
+      </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════ PLAY ══════════════ -->
+<!-- ══════════ PLAY ══════════ -->
 <div id="screen-play" class="screen">
   <div class="screen-header">
-    <button class="icon-btn" id="btn-back-describe">&#8592;</button>
-    <h2>The Arrangement</h2>
-    <button class="icon-btn" id="btn-settings-2" title="Settings">&#9881;</button>
+    <button class="icon-btn" id="btn-back-create">&#8592;</button>
+    <h2>Your Composition</h2>
+    <div style="width:34px"></div>
   </div>
-  <div class="screen-body play-body">
+  <div class="screen-body">
 
     <div class="song-header">
       <div class="ornament">&#9670; &#9670; &#9670;</div>
@@ -132,71 +98,39 @@
       </div>
     </div>
 
-    <div class="panel mb-16">
+    <div class="panel">
       <div class="panel-title">Instruments</div>
       <div id="track-list"></div>
     </div>
 
-    <div class="panel mb-16" style="padding:12px;">
+    <div class="panel" style="padding:12px;">
       <div class="panel-title">Sequencer</div>
-      <div class="roll-container">
+      <div class="roll-wrap">
         <canvas id="piano-roll"></canvas>
       </div>
     </div>
 
     <div class="play-controls">
-      <span id="tone-status">Loading audio...</span>
+      <span id="tone-status">Loading audio engine&hellip;</span>
       <button class="btn-play-big" id="btn-play" disabled>
         <span class="play-icon">&#9654;</span>
-        <span>PLAY</span>
+        <span class="play-label">PLAY</span>
       </button>
     </div>
 
     <div class="play-actions">
-      <button class="btn" id="btn-new-song">New Song</button>
-      <button class="btn ghost" id="btn-re-describe" onclick="document.getElementById('btn-back-describe').click()">Re-describe</button>
+      <button class="btn" id="btn-regenerate">Regenerate</button>
+      <button class="btn ghost" id="btn-new-song">New Song</button>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════ SETTINGS MODAL ══════════════ -->
-<div id="modal-settings" class="modal hidden">
-  <div class="modal-panel">
-    <div class="modal-title">Settings</div>
-    <div class="field-label">Anthropic API Key</div>
-    <input type="password" id="key-input" placeholder="sk-ant-api03-..." autocomplete="off" autocapitalize="none" spellcheck="false">
-    <p class="modal-hint">Get your key at console.anthropic.com &mdash; costs ~$0.01 per song</p>
-    <div class="modal-actions">
-      <button class="btn" id="btn-save-key">Save</button>
-      <button class="btn ghost" id="btn-close-settings">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════ LOADING OVERLAY ══════════════ -->
-<div id="loading-overlay" class="hidden">
-  <div class="spinner">&#9775;</div>
-  <div id="loading-text">Composing...</div>
-</div>
-
-<!-- ══════════════ TOAST ══════════════ -->
+<!-- ══════════ TOAST ══════════ -->
 <div id="toast" class="toast"></div>
 
-<!-- Update note count badge when going to describe screen -->
-<script>
-  document.getElementById('btn-to-describe').addEventListener('click', () => {
-    // This runs before app.js showScreen, so access state after
-    setTimeout(() => {
-      const c = document.getElementById('note-count');
-      if (c && window.state) c.textContent = state.melody.length;
-    }, 10);
-  });
-</script>
-
-<script src="pitch.js"></script>
+<script src="music-gen.js"></script>
 <script src="synth.js"></script>
-<script src="api.js"></script>
 <script src="piano-roll.js"></script>
 <script src="app.js"></script>
 </body>
